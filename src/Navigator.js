@@ -4,20 +4,20 @@ import {
   TabNavigator,
 } from 'react-navigation';
 
-import Auth from './screens/Auth/components/Auth';
+import AuthContainer from './screens/Auth/containers/AuthContainer';
 import Number from './screens/Auth/components/Number';
 import Social from './screens/Auth/components/Social';
-import Home from './screens/Home/components/Home';
+import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
 
 const AuthNavigator = StackNavigator({
-  Auth: { screen: Auth },
+  Auth: { screen: AuthContainer },
   Number: { screen: Number },
   Social: { screen: Social },
 });
 
 const MainNavigator = DrawerNavigator({
-  Home: { screen: Home },
+  Home: { screen: HomeContainer },
   Settings: { screen: Settings },
 });
 
