@@ -14,6 +14,8 @@ const AuthNavigator = StackNavigator({
   Auth: { screen: AuthContainer },
   Number: { screen: Number },
   Social: { screen: Social },
+}, {
+  headerMode: 'none',
 });
 
 const MainNavigator = DrawerNavigator({
@@ -24,6 +26,9 @@ const MainNavigator = DrawerNavigator({
 const Navigator = TabNavigator({
   Auth: { screen: AuthNavigator },
   Main: { screen: MainNavigator },
+}, {
+  swipeEnabled: false,
+  animationEnabled: false,
 });
 
 export default Navigator;
