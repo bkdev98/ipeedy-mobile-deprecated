@@ -17,7 +17,7 @@ const BackButton = ({ onPress }) => (
         borderRadius: 25,
       }}
       >
-        <Icon name="md-arrow-back" size={30} color="white" />
+        <Icon name="md-arrow-back" size={30} color="black" />
       </View>
     </TouchableOpacity>
     : <TouchableOpacity
@@ -33,7 +33,7 @@ const BackButton = ({ onPress }) => (
           alignItems: 'center',
         }}
       >
-        <Icon name="md-arrow-back" size={25} color="white" />
+        <Icon name="md-arrow-back" size={25} color="black" />
       </View>
     </TouchableOpacity>
 );

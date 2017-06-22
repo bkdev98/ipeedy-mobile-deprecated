@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const buttonSize = Platform.OS === 'android' ? 75 : 60;
+const buttonSize = Platform.OS === 'android' ? 65 : 60;
 const iconSize = (buttonSize / 2) - 5;
 
 const NextButton = ({ onPress }) => (
@@ -16,7 +16,7 @@ const NextButton = ({ onPress }) => (
         width: buttonSize,
         height: buttonSize,
         borderRadius: buttonSize / 2,
-        backgroundColor: '#5836b9',
+        backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
       }}

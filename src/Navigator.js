@@ -16,6 +16,7 @@ const AuthNavigator = StackNavigator({
   Social: { screen: Social },
 }, {
   headerMode: 'none',
+  mode: 'modal',
 });
 
 const MainNavigator = DrawerNavigator({

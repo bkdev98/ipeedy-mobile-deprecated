@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Platform,
   Animated,
-  Easing,
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -38,14 +37,13 @@ class Auth extends Component {
       const toValue = this.state.openPhone ? 1 : 0;
       Animated.timing(this.phoneAnimate, {
         toValue,
-        duration: 200,
-        easing: Easing.ease,
+        duration: 300,
       }).start();
     });
   }
 
   handlePressSocial = () => {
-
+    this.props.navigation.navigate('Social');
   }
 
   handleNextPhone = () => {}
@@ -58,21 +56,26 @@ class Auth extends Component {
     */
     const headerFlexInterpolate = this.phoneAnimate.interpolate({
       inputRange: [0, 1],
-      outputRange: [6.5, 0],
+      outputRange: [7, 0],
     });
 
     const titleFlexInterpolate = this.phoneAnimate.interpolate({
       inputRange: [0, 1],
-      outputRange: [1.25, 0],
+      outputRange: [2.5, 0],
     });
 
-    const titleHeightInterpolate = this.phoneAnimate.interpolate({
+    const socialFlexInterpolate = this.phoneAnimate.interpolate({
       inputRange: [0, 1],
-      outputRange: [100, 0],
+      outputRange: [3, 0],
     });
 
     const reverseValueInterpolate = this.phoneAnimate.interpolate({
       inputRange: [0, 1],
+      outputRange: [1, 0],
+    });
+
+    const reverseHalfValueInterpolate = this.phoneAnimate.interpolate({
+      inputRange: [0, 0.5],
       outputRange: [1, 0],
     });
 
@@ -102,37 +105,33 @@ class Auth extends Component {
       ],
     };
 
-    const titleStyle = {
+    const nextButtonStyle = {
+      right: nextbuttonInterpolate,
+    };
+
+    const titleContainerStyle = {
+      transform: [
+        { scale: reverseValueInterpolate },
+      ],
       flex: titleFlexInterpolate,
-      height: titleHeightInterpolate,
+    };
+
+    const opacityInterpolateStyle = {
+      opacity: reverseHalfValueInterpolate,
+    };
+
+    const scaleInterpolateStyle = {
       transform: [
         { scale: reverseValueInterpolate },
       ],
     };
 
     const socialStyle = {
-      flex: reverseValueInterpolate,
-    };
-
-    const textStyle = {
-      opacity: reverseValueInterpolate,
-      transform: [
-        { scale: reverseValueInterpolate },
-      ],
-    };
-
-    const socialTextStyle = {
-      transform: [
-        { scale: reverseValueInterpolate },
-      ],
+      flex: socialFlexInterpolate,
     };
 
     const phoneTextStyle = {
       opacity: reverseValueInterpolate,
-    };
-
-    const nextButtonStyle = {
-      right: nextbuttonInterpolate,
     };
 
     /**
@@ -143,75 +142,97 @@ class Auth extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor={'transparent'} translucent />
+        <StatusBar barStyle="light-content" />
 
-        <Animated.View style={[styles.nextButtonContainer, nextButtonStyle]}>
-          <NextButton onPress={this.handleNextPhone} />
-        </Animated.View>
+        {/*
+          Header
+        */}
 
         <Animated.View style={[styles.headerContainer, headerStyle]}>
           <Image
             style={styles.backgroundImage}
             source={require('../../../../assets/images/auth-background.png')}
           >
-            <View
-              style={styles.iconContainer}
-              shadowColor="black"
-              shadowOffset={{ width: 0, height: 0 }}
-              shadowOpacity={0.3}
-              shadowRadius={10}
+            <Animated.View
+              style={[styles.iconContainer, phoneTextStyle]}
             >
-              <Icon name="ios-cart-outline" size={60} color="#8E24AA" />
-            </View>
+              <Icon name="ios-cart-outline" size={60} color="black" />
+            </Animated.View>
           </Image>
         </Animated.View>
 
-        <Animated.View style={[styles.backIcon, backIconStyle]}>
-          <BackButton onPress={this.handlePressNumber} />
+        {/*
+          Phone Number Container
+        */}
+
+        <Animated.View style={[styles.nextButtonContainer, nextButtonStyle]}>
+          <NextButton onPress={this.handleNextPhone} />
         </Animated.View>
 
-        <Animated.View style={[styles.titleContainer, titleStyle]}>
-          <Animated.Text style={[styles.title, textStyle]}>Ride Like The Wind</Animated.Text>
-        </Animated.View>
-        <Animated.View style={[styles.phoneContainer]}>
-          {this.state.openPhone ?
-            <View style={styles.phoneOpenContainer}>
-              <View style={styles.phoneOpenTitleContainer}>
-                <Text style={styles.phoneOpenTitle}>Enter your mobile number</Text>
-              </View>
-              <View style={styles.phoneInputContainer}>
-                <Text style={styles.nationFlag}>+84 </Text>
-                <TextInput
-                  autoFocus
-                  style={styles.textInput}
-                  placeholder="091 234 56 78"
-                  placeholderTextColor="rgba(255,255,255,.3)"
-                  keyboardType="phone-pad"
-                  underlineColorAndroid="white"
-                  selectionColor="white"
-                />
-                <View style={styles.closeIconContainer}>
-                  <Icon name="md-close" size={20} color="white" />
+        {this.state.openPhone &&
+          <Animated.View style={[styles.backIcon, backIconStyle]}>
+            <BackButton onPress={this.handlePressNumber} />
+          </Animated.View>
+        }
+
+        <View style={styles.authContainer}>
+          <Animated.View style={[styles.titleContainer, titleContainerStyle]}>
+            <Animated.Text style={[styles.title, opacityInterpolateStyle, scaleInterpolateStyle]}>Ride Like The Wind</Animated.Text>
+          </Animated.View>
+
+          <Animated.View style={[styles.phoneContainer]}>
+            {this.state.openPhone ?
+              <View style={styles.phoneOpenContainer}>
+                <View style={styles.phoneOpenTitleContainer}>
+                  <Text style={styles.phoneOpenTitle}>Enter your mobile number</Text>
+                </View>
+                <View style={styles.phoneInputContainer}>
+                  <Text style={styles.nationFlag}>+84 </Text>
+                  <TextInput
+                    autoFocus
+                    style={styles.textInput}
+                    placeholder="091 234 56 78"
+                    placeholderTextColor="rgba(0,0,0,.3)"
+                    keyboardType="phone-pad"
+                    underlineColorAndroid="black"
+                    selectionColor="black"
+                  />
+                  <View style={styles.closeIconContainer}>
+                    <Icon name="md-close" size={20} color="black" />
+                  </View>
                 </View>
               </View>
-            </View>
-            : <TouchableOpacity onPress={() => this.handlePressNumber()} activeOpacity={0.9} style={styles.phoneButtonContainer}>
-              <View style={styles.phoneInsideContainer}>
-                <Text style={styles.nationFlag}>+84 </Text>
-                <Animated.Text style={[styles.numberText, phoneTextStyle]}>Enter your mobile number</Animated.Text>
-              </View>
+              : <TouchableOpacity onPress={() => this.handlePressNumber()} activeOpacity={0.9} style={styles.phoneButtonContainer}>
+                <View style={styles.phoneInsideContainer}>
+                  <Text style={styles.nationFlag}>+84 </Text>
+                  <Animated.Text style={[styles.numberText, phoneTextStyle]}>Enter your mobile number</Animated.Text>
+                </View>
+              </TouchableOpacity>
+            }
+          </Animated.View>
+
+          <Animated.View style={{ height: 1, backgroundColor: 'rgba(0,0,0,.1)', ...phoneTextStyle }} />
+
+          {/*
+            Social Section
+          */}
+
+          <Animated.View style={[styles.socialContainer, socialStyle]}>
+            <TouchableOpacity onPress={this.handlePressSocial} activeOpacity={0.9} style={styles.socialButtonContainer}>
+              <Animated.Text style={[styles.socialText, opacityInterpolateStyle]}>Or connect with social</Animated.Text>
             </TouchableOpacity>
-          }
-        </Animated.View>
-        <Animated.View style={[styles.socialContainer, socialStyle]}>
-          <TouchableOpacity onPress={this.handlePressSocial} activeOpacity={0.9} style={styles.socialButtonContainer}>
-            <Animated.Text style={[styles.socialText, socialTextStyle]}>Or connect with social</Animated.Text>
-          </TouchableOpacity>
-        </Animated.View>
+          </Animated.View>
+        </View>
       </View>
     );
   }
 }
+
+/**
+|--------------------------------------------------
+| Beautiful
+|--------------------------------------------------
+*/
 
 const styles = StyleSheet.create({
   container: {
@@ -219,7 +240,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   headerContainer: {
-    flex: 6.5,
+    flex: 7,
   },
   backIcon: {
     position: 'absolute',
@@ -241,21 +262,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
   authContainer: {
-    flex: 3.5,
+    flex: 3,
     backgroundColor: 'white',
   },
   titleContainer: {
-    flex: 1.25,
+    flex: 2.5,
+    top: 15,
     justifyContent: 'center',
-    backgroundColor: '#F3E5F5',
+    // backgroundColor: '#F3E5F5',
     paddingLeft: 30,
   },
   title: {
-    fontSize: 27,
-    fontFamily: 'Quicksand-Medium',
-    color: '#894fc6',
+    fontSize: 26,
+    fontFamily: 'Quicksand-Regular',
+    // color: '#894fc6',
+    color: 'black',
   },
   closeIconContainer: {
     flex: 2,
@@ -263,8 +290,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   phoneContainer: {
-    flex: 1.75,
-    backgroundColor: '#894fc6',
+    flex: 4.5,
+    // backgroundColor: '#894fc6',
   },
   phoneButtonContainer: {
     justifyContent: 'center',
@@ -280,41 +307,43 @@ const styles = StyleSheet.create({
   },
   phoneOpenTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
-    color: 'white',
-    fontFamily: 'Quicksand-Medium',
+    color: 'black',
+    fontFamily: 'Quicksand-Regular',
   },
   phoneOpenTitleContainer: {
     paddingLeft: 20,
-    top: 100,
+    top: 80,
   },
   phoneInputContainer: {
-    top: 150,
+    top: 110,
     flexDirection: 'row',
     paddingLeft: 30,
   },
   nationFlag: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
-    fontFamily: 'Quicksand-Medium',
-    color: 'white',
+    fontFamily: 'Quicksand-Regular',
+    color: 'black',
     flex: 2,
   },
   numberText: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
-    color: 'rgba(255,255,255,.3)',
+    color: 'rgba(0,0,0,.3)',
+    left: -15,
     flex: 9,
     alignItems: 'flex-start',
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Quicksand-Regular',
   },
   textInput: {
-    top: Platform.OS === 'android' ? -12 : 0,
+    top: Platform.OS === 'android' ? -14 : 0,
+    left: -15,
     fontSize: Platform.OS === 'android' ? 22 : 20,
-    color: 'white',
+    color: 'black',
     flex: 6,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Quicksand-Regular',
   },
   socialContainer: {
-    backgroundColor: '#c26bd6',
-    flex: 1,
+    flex: 3,
+    justifyContent: 'flex-start',
   },
   socialButtonContainer: {
     paddingLeft: 30,
@@ -322,8 +351,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   socialText: {
-    color: 'rgba(255,255,255,.7)',
-    fontFamily: 'Quicksand-Medium',
+    color: '#3F51B5',
+    fontFamily: 'Quicksand-Regular',
     fontSize: 17,
   },
   nextButtonContainer: {
