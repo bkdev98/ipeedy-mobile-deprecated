@@ -3,40 +3,47 @@ import {
   View,
   Text,
   StatusBar,
+  StyleSheet,
 } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 class Home extends Component {
   static navigationOptions = {
     tabBarVisible: false,
   }
 
+  state = {
+    region: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
+  }
+
+  onRegionChange = (region) => {
+    this.setState({ region });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-        <View style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#F06292',
-        }}
-        >
-          <Text style={{
-            fontFamily: 'Quicksand-Medium',
-            fontSize: 30,
-            color: '#F8BBD0',
-          }}
-          >Home Screen</Text>
-        </View>
+        <MapView
+          style={StyleSheet.absoluteFill}
+          provider={PROVIDER_GOOGLE}
+          region={this.state.region}
+          onRegionChange={this.onRegionChange}
+        />
       </View>
     );
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-};
+});
 
 export default Home;

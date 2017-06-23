@@ -3,6 +3,10 @@
 .DS_Store
 .vscode
 
+# Cocoapods
+#
+Pods/
+
 # Xcode
 #
 build/
