@@ -26,15 +26,12 @@ class Auth extends Component {
     openPhone: false,
     openSocial: false,
     phoneError: null,
-    input: '',
   }
 
   componentWillMount() {
     this.phoneAnimate = new Animated.Value(0);
     this.socialAnimate = new Animated.Value(0);
   }
-
-  handleChangePhone = phone => this.setState({ input: phone })
 
   handlePressNumber = () => {
     this.setState((state) => ({
@@ -199,6 +196,7 @@ class Auth extends Component {
                     keyboardType="phone-pad"
                     underlineColorAndroid="black"
                     selectionColor="black"
+                    onSubmitEditing={() => this.handleNextPhone()}
                     onChangeText={value => this.handlePhoneChange(value)}
                     value={this.props.inputData.phone}
                   />
@@ -319,6 +317,7 @@ export const styles = StyleSheet.create({
   phoneOpenTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
     color: 'black',
+    lineHeight: 35,
     fontFamily: 'Quicksand-Regular',
   },
   phoneOpenTitleContainer: {
