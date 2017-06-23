@@ -23,12 +23,15 @@ class Auth extends Component {
   state = {
     openPhone: false,
     openSocial: false,
+    input: '',
   }
 
   componentWillMount() {
     this.phoneAnimate = new Animated.Value(0);
     this.socialAnimate = new Animated.Value(0);
   }
+
+  handleChangePhone = phone => this.setState({ input: phone })
 
   handlePressNumber = () => {
     this.setState((state) => ({
@@ -196,10 +199,14 @@ class Auth extends Component {
                     keyboardType="phone-pad"
                     underlineColorAndroid="black"
                     selectionColor="black"
+                    onChangeText={value => this.props.getInputData({ key: 'phone', value })}
+                    value={this.props.inputData.phone}
                   />
-                  <View style={styles.closeIconContainer}>
-                    <Icon name="md-close" size={20} color="black" />
-                  </View>
+                  <TouchableOpacity style={styles.closeIconContainer} onPress={() => this.props.getInputData({ key: 'phone', value: '' })}>
+                    <View style={{ flex: 1 }}>
+                      <Icon name="md-close" size={20} color="black" />
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </View>
               : <TouchableOpacity onPress={() => this.handlePressNumber()} activeOpacity={0.9} style={styles.phoneButtonContainer}>
