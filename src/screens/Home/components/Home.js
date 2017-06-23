@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+} from 'react-native';
 
 class Home extends Component {
-  state = { }
+  static navigationOptions = {
+    tabBarVisible: false,
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
         <View style={{
           flex: 1,
           justifyContent: 'center',

@@ -47,7 +47,9 @@ class Number extends Component {
     this.setState({ count: 20 }, () => this.startCountdown());
   }
 
-  handlePressNext = () => {}
+  handlePressNext = () => {
+    this.props.navigation.navigate('Main');
+  }
 
   render() {
     const { navigation, inputData, getInputData } = this.props;
