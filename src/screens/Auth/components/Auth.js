@@ -4,13 +4,15 @@ import {
   Text,
   Image,
   StatusBar,
-  StyleSheet,
   TouchableOpacity,
   Platform,
   Animated,
   TextInput,
+  StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import { instanceTypeFormat, isValidNumber } from '../../../utils/phoneNumber';
 
 import NextButton from './NextButton';
 import BackButton from './BackButton';
@@ -23,6 +25,7 @@ class Auth extends Component {
   state = {
     openPhone: false,
     openSocial: false,
+    phoneError: null,
     input: '',
   }
 
@@ -49,7 +52,26 @@ class Auth extends Component {
     this.props.navigation.navigate('Social');
   }
 
-  handleNextPhone = () => {}
+  handlePhoneChange = (value) => {
+    this.setState({ phoneError: null });
+    this.props.getInputData({ key: 'phone', value: instanceTypeFormat(value) });
+  }
+
+  handlePhoneClear = () => {
+    this.setState({ phoneError: null });
+    this.props.getInputData({ key: 'phone', value: '' });
+  }
+
+  handleNextPhone = () => {
+    const { inputData } = this.props;
+    if (!isValidNumber(inputData.phone)) {
+      this.setState({
+        phoneError: 'This phone number is invalid',
+      });
+      return;
+    }
+    this.props.navigation.navigate('ConfirmPhone');
+  }
 
   render() {
     /**
@@ -177,15 +199,20 @@ class Auth extends Component {
                     keyboardType="phone-pad"
                     underlineColorAndroid="black"
                     selectionColor="black"
-                    onChangeText={value => this.props.getInputData({ key: 'phone', value })}
+                    onChangeText={value => this.handlePhoneChange(value)}
                     value={this.props.inputData.phone}
                   />
-                  <TouchableOpacity style={styles.closeIconContainer} onPress={() => this.props.getInputData({ key: 'phone', value: '' })}>
+                  <TouchableOpacity style={styles.closeIconContainer} onPress={this.handlePhoneClear}>
                     <View style={{ flex: 1 }}>
                       <Icon name="md-close" size={20} color="black" />
                     </View>
                   </TouchableOpacity>
                 </View>
+                {this.state.phoneError &&
+                  <View style={styles.phoneErrorContainer}>
+                    <Text style={styles.phoneError}>{this.state.phoneError}</Text>
+                  </View>
+                }
               </View>
               : <TouchableOpacity onPress={() => this.handlePressNumber()} activeOpacity={0.9} style={styles.phoneButtonContainer}>
                 <View style={styles.phoneInsideContainer}>
@@ -219,10 +246,9 @@ class Auth extends Component {
 |--------------------------------------------------
 */
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch',
   },
   headerContainer: {
     flex: 7,
@@ -303,6 +329,15 @@ const styles = StyleSheet.create({
     top: 110,
     flexDirection: 'row',
     paddingLeft: 30,
+  },
+  phoneErrorContainer: {
+    top: 125,
+    paddingLeft: 85,
+  },
+  phoneError: {
+    fontSize: Platform.OS === 'android' ? 17 : 15,
+    color: '#B71C1C',
+    fontFamily: 'Quicksand-Regular',
   },
   nationFlag: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
