@@ -25,7 +25,7 @@ const NextButton = ({ onPress }) => (
       shadowOpacity={0.2}
       shadowRadius={3}
     >
-      <Icon name="md-checkmark" size={iconSize} color="white" />
+      <Icon name="md-arrow-forward" size={iconSize} color="white" />
     </View>
   </TouchableOpacity>
 );

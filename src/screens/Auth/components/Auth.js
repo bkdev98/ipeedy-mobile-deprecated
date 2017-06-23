@@ -54,73 +54,52 @@ class Auth extends Component {
   render() {
     /**
     |--------------------------------------------------
-    | Interpolates
+    | Animation Styles
     |--------------------------------------------------
     */
-    const headerFlexInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [7, 0],
-    });
-
-    const titleFlexInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [2.5, 0],
-    });
-
-    const socialFlexInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [3, 0],
-    });
-
     const reverseValueInterpolate = this.phoneAnimate.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0],
     });
 
-    const reverseHalfValueInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 0.5],
-      outputRange: [1, 0],
-    });
-
-    const backiconInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-45, Platform.OS === 'android' ? 20 : 10],
-    });
-
-    const nextbuttonInterpolate = this.phoneAnimate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-75, 45],
-    });
-
-    /**
-    |--------------------------------------------------
-    | Animation Styles
-    |--------------------------------------------------
-    */
-
     const headerStyle = {
-      flex: headerFlexInterpolate,
+      flex: this.phoneAnimate.interpolate({
+        inputRange: [0, 1],
+        outputRange: [7, 0],
+      }),
     };
 
     const backIconStyle = {
       transform: [
-        { translateX: backiconInterpolate },
+        { translateX: this.phoneAnimate.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-45, Platform.OS === 'android' ? 20 : 10],
+        }) },
       ],
     };
 
     const nextButtonStyle = {
-      right: nextbuttonInterpolate,
+      right: this.phoneAnimate.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-75, 45],
+      }),
     };
 
     const titleContainerStyle = {
       transform: [
         { scale: reverseValueInterpolate },
       ],
-      flex: titleFlexInterpolate,
+      flex: this.phoneAnimate.interpolate({
+        inputRange: [0, 1],
+        outputRange: [2.5, 0],
+      }),
     };
 
     const opacityInterpolateStyle = {
-      opacity: reverseHalfValueInterpolate,
+      opacity: this.phoneAnimate.interpolate({
+        inputRange: [0, 0.5],
+        outputRange: [1, 0],
+      }),
     };
 
     const scaleInterpolateStyle = {
@@ -130,11 +109,10 @@ class Auth extends Component {
     };
 
     const socialStyle = {
-      flex: socialFlexInterpolate,
-    };
-
-    const phoneTextStyle = {
-      opacity: reverseValueInterpolate,
+      flex: this.phoneAnimate.interpolate({
+        inputRange: [0, 1],
+        outputRange: [3, 0],
+      }),
     };
 
     /**
@@ -157,7 +135,7 @@ class Auth extends Component {
             source={require('../../../../assets/images/auth-background.png')}
           >
             <Animated.View
-              style={[styles.iconContainer, phoneTextStyle]}
+              style={[styles.iconContainer, opacityInterpolateStyle]}
             >
               <Icon name="ios-cart-outline" size={60} color="black" />
             </Animated.View>
@@ -212,13 +190,13 @@ class Auth extends Component {
               : <TouchableOpacity onPress={() => this.handlePressNumber()} activeOpacity={0.9} style={styles.phoneButtonContainer}>
                 <View style={styles.phoneInsideContainer}>
                   <Text style={styles.nationFlag}>+84 </Text>
-                  <Animated.Text style={[styles.numberText, phoneTextStyle]}>Enter your mobile number</Animated.Text>
+                  <Animated.Text style={[styles.numberText, opacityInterpolateStyle]}>Enter your mobile number</Animated.Text>
                 </View>
               </TouchableOpacity>
             }
           </Animated.View>
 
-          <Animated.View style={{ height: 1, backgroundColor: 'rgba(0,0,0,.1)', ...phoneTextStyle }} />
+          <Animated.View style={{ height: 1, backgroundColor: 'rgba(0,0,0,.1)', ...opacityInterpolateStyle }} />
 
           {/*
             Social Section
