@@ -14,8 +14,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { instanceTypeFormat, isValidNumber } from '../../../utils/phoneNumber';
 
-import NextButton from './NextButton';
-import BackButton from './BackButton';
+import NextButton from '../../../components/NextButton';
+import BackButton from '../../../components/BackButton';
 
 class Auth extends Component {
   static navigationOptions = {

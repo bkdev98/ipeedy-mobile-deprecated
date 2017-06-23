@@ -14,8 +14,8 @@ import { styles as authStyles } from './Auth';
 
 import { interFormat } from '../../../utils/phoneNumber';
 
-import BackButton from './BackButton';
-import NextButton from './NextButton';
+import BackButton from '../../../components/BackButton';
+import NextButton from '../../../components/NextButton';
 
 class Number extends Component {
   static navigationOptions = {

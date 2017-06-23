@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import BackButton from './BackButton';
+import BackButton from '../../../components/BackButton';
 
 class Social extends Component {
   static navigationOptions = {
