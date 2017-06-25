@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   StackNavigator,
   DrawerNavigator,
@@ -9,6 +10,8 @@ import ConfirmPhone from './screens/Auth/components/ConfirmPhone';
 import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
+
+import Drawer from './components/Drawer';
 
 const PhoneAuthNavigator = StackNavigator({
   Auth: { screen: AuthContainer },
@@ -28,14 +31,17 @@ const AuthNavigator = StackNavigator({
 const MainNavigator = DrawerNavigator({
   Home: { screen: HomeContainer },
   Settings: { screen: Settings },
+}, {
+  contentComponent: props => <Drawer {...props} />,
 });
 
 const Navigator = TabNavigator({
-  Auth: { screen: AuthNavigator },
+  // Auth: { screen: AuthNavigator },
   Main: { screen: MainNavigator },
 }, {
   swipeEnabled: false,
   animationEnabled: false,
+  tabBarPosition: 'bottom',
 });
 
 export default Navigator;

@@ -3,13 +3,16 @@ import {
   View,
   Text,
   StatusBar,
+  Platform,
   StyleSheet,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
+import Hamburger from '../../../components/Hamburger';
+
 class Home extends Component {
   static navigationOptions = {
-    tabBarVisible: false,
+    // tabBarVisible: false,
   }
 
   state = {
@@ -25,10 +28,17 @@ class Home extends Component {
     this.setState({ region });
   }
 
+  handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
+
   render() {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+        <View style={styles.hamburgerContainer}>
+          <Hamburger onPress={this.handleHamburger} />
+        </View>
+
         <MapView
           style={StyleSheet.absoluteFill}
           provider={PROVIDER_GOOGLE}
@@ -43,6 +53,14 @@ class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  hamburgerContainer: {
+    position: 'absolute',
+    zIndex: 2,
+    elevation: 2,
+    top: Platform.OS === 'android' ? 35 : 25,
+    left: Platform.OS === 'android' ? 35 : 5,
+    backgroundColor: 'transparent',
   },
 });
 
