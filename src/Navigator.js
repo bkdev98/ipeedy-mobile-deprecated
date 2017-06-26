@@ -36,12 +36,18 @@ const MainNavigator = DrawerNavigator({
 });
 
 const Navigator = TabNavigator({
-  // Auth: { screen: AuthNavigator },
+  Auth: { screen: AuthNavigator },
   Main: { screen: MainNavigator },
 }, {
   swipeEnabled: false,
   animationEnabled: false,
   tabBarPosition: 'bottom',
+  tabBarOptions: {
+    style: {
+      height: 0,
+    },
+    showLabel: false,
+  },
 });
 
 export default Navigator;

@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
+import MapStyle from './MapStyle';
 import Hamburger from '../../../components/Hamburger';
 
 class Home extends Component {
   static navigationOptions = {
-    // tabBarVisible: false,
+    tabBarVisible: false,
   }
 
   state = {
@@ -44,6 +45,7 @@ class Home extends Component {
           provider={PROVIDER_GOOGLE}
           region={this.state.region}
           onRegionChange={this.onRegionChange}
+          customMapStyle={MapStyle}
         />
       </View>
     );
