@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
+  ActivityIndicator,
   StatusBar,
   Platform,
   StyleSheet,
@@ -17,12 +17,17 @@ class Home extends Component {
   }
 
   state = {
-    region: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    },
+    region: null,
+  }
+
+  componentDidMount() {
+    this.props.getCurrentLocation();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      region: nextProps.region,
+    });
   }
 
   onRegionChange = (region) => {
@@ -32,21 +37,33 @@ class Home extends Component {
   handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
 
   render() {
+    const { region, loading } = this.props;
+
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+        {
+          loading ?
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator />
+            </View>
+            :
+            <MapView
+              style={StyleSheet.absoluteFill}
+              provider={PROVIDER_GOOGLE}
+              region={this.state.region}
+              onRegionChange={this.onRegionChange}
+              customMapStyle={MapStyle}
+            >
+              {region && <MapView.Marker coordinate={region} pinColor='pink' />}
+            </MapView>
+        }
 
         <View style={styles.hamburgerContainer}>
           <Hamburger onPress={this.handleHamburger} />
         </View>
 
-        <MapView
-          style={StyleSheet.absoluteFill}
-          provider={PROVIDER_GOOGLE}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-          customMapStyle={MapStyle}
-        />
       </View>
     );
   }
@@ -55,6 +72,12 @@ class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   hamburgerContainer: {
     position: 'absolute',
