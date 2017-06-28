@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 0.0922 / 2;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 /**
@@ -97,18 +97,18 @@ const handleGetCurrentLocationFail = (state, action) => ({
   },
 });
 
-/**
-|--------------------------------------------------
-| Reducer
-|--------------------------------------------------
-*/
-
 const ACTION_HANDLERS = {
   GET_INPUT: handleGetInputData,
   GET_CURRENT_LOCATION: handleGetCurrentLocation,
   GET_CURRENT_LOCATION_SUCCESS: handleGetCurrentLocationSuccess,
   GET_CURRENT_LOCATION_FAIL: handleGetCurrentLocationFail,
 };
+
+/**
+|--------------------------------------------------
+| Reducer
+|--------------------------------------------------
+*/
 
 const initialState = {
   inputData: {},
