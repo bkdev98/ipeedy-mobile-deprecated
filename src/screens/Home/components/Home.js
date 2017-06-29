@@ -5,6 +5,7 @@ import {
   StatusBar,
   Platform,
   StyleSheet,
+  Animated,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -13,132 +14,7 @@ import ProductsList from './ProductsList';
 import Hamburger from '../../../components/Hamburger';
 import UserMarker from './UserMarker';
 
-const productsArray = [
-  {
-    id: 1001,
-    name: 'Vé số',
-    images: [
-      'https://source.unsplash.com/user/erondu/400x400',
-    ],
-    price: '10K',
-    description: 'Vé số chiều xổ đây',
-    rating: 5,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      }, {
-        id: 2,
-        content: 'Risus Adipiscing Malesuada Inceptos',
-      }, {
-        id: 3,
-        content: 'Justo Sit Sollicitudin',
-      }, {
-        id: 4,
-        content: 'Fusce Purus Sem Consectetur',
-      },
-    ],
-  }, {
-    id: 1002,
-    name: 'Xoài lắc',
-    images: [
-      'https://source.unsplash.com/collection/190727/400x400',
-    ],
-    price: '15K',
-    description: 'Xoài lắc lắc lắc lắc',
-    rating: 4,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      }, {
-        id: 2,
-        content: 'Risus Adipiscing Malesuada Inceptos',
-      }, {
-        id: 4,
-        content: 'Fusce Purus Sem Consectetur',
-      },
-    ],
-  }, {
-    id: 1003,
-    name: 'Trà đào',
-    images: [
-      'https://source.unsplash.com/user/erondu/likes/400x400',
-    ],
-    price: '20K',
-    description: 'Trà đào thơm miệng giải độc',
-    rating: 2,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      }, {
-        id: 2,
-        content: 'Risus Adipiscing Malesuada Inceptos',
-      }, {
-        id: 3,
-        content: 'Justo Sit Sollicitudin',
-      },
-    ],
-  }, {
-    id: 1004,
-    name: 'Keo chó',
-    images: [
-      'https://source.unsplash.com/user/erondu/400x400',
-    ],
-    price: '5K',
-    description: 'X-66 100ml chất lượng, giá tốt',
-    rating: 5,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      },
-    ],
-  }, {
-    id: 1005,
-    name: 'Bạc xỉu',
-    images: [
-      'https://source.unsplash.com/collection/190727/400x400',
-    ],
-    price: '30K',
-    description: 'Ly sữa vị cà phê dân dã',
-    rating: 3,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      }, {
-        id: 2,
-        content: 'Risus Adipiscing Malesuada Inceptos',
-      },
-    ],
-  }, {
-    id: 1006,
-    name: 'Kẹo sữa Milkita',
-    images: [
-      'https://source.unsplash.com/user/erondu/likes/400x400',
-    ],
-    price: '2K',
-    description: 'Được làm từ sữa',
-    rating: 5,
-    reviews: [
-      {
-        id: 1,
-        content: 'Etiam Vestibulum Sem Ligula Egestas',
-      }, {
-        id: 2,
-        content: 'Risus Adipiscing Malesuada Inceptos',
-      }, {
-        id: 3,
-        content: 'Justo Sit Sollicitudin',
-      }, {
-        id: 4,
-        content: 'Fusce Purus Sem Consectetur',
-      },
-    ],
-  },
-];
+import feedProducts from '../modules/feed';
 
 class Home extends Component {
   static navigationOptions = {
@@ -149,8 +25,37 @@ class Home extends Component {
     region: null,
   }
 
+  componentWillMount() {
+    this.animation = new Animated.Value(0);
+  }
+
   componentDidMount() {
     this.props.getCurrentLocation();
+    this.animation.addListener(({ value }) => {
+      let index = Math.floor((value / 175) + 0.3);
+      if (index >= feedProducts.length) {
+        index = feedProducts.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(this.regionTimeout);
+      this.regionTimeout = setTimeout(() => {
+        if (this.index !== index) {
+          this.index = index;
+          const { coordinate } = feedProducts[index];
+          this.map.animateToRegion(
+            {
+              ...coordinate,
+              latitudeDelta: this.props.region.latitudeDelta,
+              longitudeDelta: this.props.region.longitudeDelta,
+            },
+            350
+          );
+        }
+      }, 10);
+    });
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -167,6 +72,28 @@ class Home extends Component {
 
   render() {
     const { region, loading } = this.props;
+
+    const interpolations = feedProducts.map((product, index) => {
+      const inputRange = [
+        (index - 1) * 175,
+        index * 175,
+        ((index + 1) * 175),
+      ];
+
+      const size = this.animation.interpolate({
+        inputRange,
+        outputRange: [24, 60, 24],
+        extrapolate: 'clamp',
+      });
+
+      const opacity = this.animation.interpolate({
+        inputRange,
+        outputRange: [0.35, 1, 0.35],
+        extrapolate: 'clamp',
+      });
+
+      return { opacity, size };
+    });
 
     return (
       <View style={styles.container}>
@@ -188,6 +115,7 @@ class Home extends Component {
               </View>
               :
               <MapView
+                ref={map => this.map = map}
                 style={StyleSheet.absoluteFill}
                 provider={PROVIDER_GOOGLE}
                 region={this.state.region}
@@ -197,6 +125,24 @@ class Home extends Component {
                 {region && <MapView.Marker coordinate={region}>
                   <UserMarker />
                 </MapView.Marker>}
+                {feedProducts.map((product, index) => {
+                  const sizeStyle = {
+                    width: interpolations[index].size,
+                    height: interpolations[index].size,
+                    borderRadius: interpolations[index].size,
+                  };
+                  const opacityStyle = {
+                    opacity: interpolations[index].opacity,
+                  };
+                  return (
+                    <MapView.Marker key={product.id} coordinate={product.coordinate}>
+                      <Animated.View style={[styles.markerWrap, opacityStyle]}>
+                        <Animated.View style={[styles.ring, sizeStyle]} />
+                        <View style={styles.marker} />
+                      </Animated.View>
+                    </MapView.Marker>
+                  );
+                })}
               </MapView>
           }
         </View>
@@ -206,7 +152,7 @@ class Home extends Component {
         */}
 
         <View style={styles.productsContainer}>
-          <ProductsList products={productsArray} />
+          <ProductsList products={feedProducts} animation={this.animation} />
         </View>
 
       </View>
@@ -238,6 +184,27 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 35 : 25,
     left: Platform.OS === 'android' ? 35 : 5,
     backgroundColor: 'transparent',
+  },
+  markerWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+    height: 100,
+  },
+  marker: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(130,4,150, 0.9)',
+  },
+  ring: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(130,4,150, 0.2)',
+    position: 'absolute',
+    borderWidth: 1,
+    borderColor: 'rgba(130,4,150, 0.4)',
   },
 });
 

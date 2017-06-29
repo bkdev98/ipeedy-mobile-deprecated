@@ -3,11 +3,14 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   StyleSheet,
+  Animated,
+  Dimensions,
 } from 'react-native';
 
 import Rating from './Rating';
+
+const { width } = Dimensions.get('window');
 
 class ProductsList extends Component {
   render() {
@@ -28,14 +31,28 @@ class ProductsList extends Component {
     ));
 
     return (
-      <ScrollView
+      <Animated.ScrollView
         horizontal
-        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={1}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: this.props.animation,
+                },
+              },
+            },
+          ],
+          { useNativeDriver: false }
+        )}
+        snapToInterval={175}
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}
       >
         {products}
-      </ScrollView>
+      </Animated.ScrollView>
     );
   }
 }
@@ -50,6 +67,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     backgroundColor: 'white',
+    paddingRight: width - 175,
   },
   productContainer: {
     width: 175,
@@ -73,10 +91,6 @@ const styles = StyleSheet.create({
   productDescription: {
     fontFamily: 'Quicksand-Regular',
     fontSize: 12,
-  },
-  productRating: {
-    fontFamily: 'Quicksand-Regular',
-    fontSize: 9,
   },
 });
 
