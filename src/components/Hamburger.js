@@ -33,7 +33,7 @@ const Hamburger = ({ onPress }) => (
           alignItems: 'center',
         }}
       >
-        <Icon name="ios-menu" size={28} color="white" />
+        <Icon name="ios-menu" size={28} color="black" />
       </View>
     </TouchableOpacity>
 );
