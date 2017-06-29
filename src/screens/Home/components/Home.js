@@ -122,7 +122,8 @@ class Home extends Component {
                 onRegionChange={this.onRegionChange}
                 customMapStyle={MapStyle}
               >
-                {region && <MapView.Marker coordinate={region}>
+                {region &&
+                <MapView.Marker coordinate={region} anchor={{ x: 0.5, y: 0.5 }}>
                   <UserMarker />
                 </MapView.Marker>}
                 {feedProducts.map((product, index) => {
@@ -135,7 +136,11 @@ class Home extends Component {
                     opacity: interpolations[index].opacity,
                   };
                   return (
-                    <MapView.Marker key={product.id} coordinate={product.coordinate}>
+                    <MapView.Marker
+                      key={product.id}
+                      coordinate={product.coordinate}
+                      anchor={{ x: 0.5, y: 0.5 }}
+                    >
                       <Animated.View style={[styles.markerWrap, opacityStyle]}>
                         <Animated.View style={[styles.ring, sizeStyle]} />
                         <View style={styles.marker} />
@@ -188,8 +193,9 @@ const styles = StyleSheet.create({
   markerWrap: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
-    height: 100,
+    overflow: 'visible',
+    width: 60,
+    height: 60,
   },
   marker: {
     width: 8,
