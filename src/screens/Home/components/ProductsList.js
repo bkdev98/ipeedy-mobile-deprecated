@@ -13,10 +13,22 @@ import Rating from './Rating';
 const { width } = Dimensions.get('window');
 
 class ProductsList extends Component {
+  state = {
+    selectedProduct: 0,
+  }
+
+  handleScroll = event => {
+    this.setState({
+      selectedProduct: Math.trunc(event.nativeEvent.contentOffset.x / 175),
+    });
+  }
+
   render() {
-    const products = this.props.products.map(product => (
+    const products = this.props.products.map((product, index) => (
       <View style={styles.productContainer} key={product.id}>
         <View style={styles.productHeader}>
+          {index === this.state.selectedProduct &&
+            <View style={styles.seletedProduct} />}
           <Image
             source={{ uri: product.images[0] }}
             style={{ flex: 1 }}
@@ -32,6 +44,7 @@ class ProductsList extends Component {
 
     return (
       <Animated.ScrollView
+        ref={c => this._scrollview = c}
         horizontal
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={1}
@@ -44,8 +57,9 @@ class ProductsList extends Component {
                 },
               },
             },
-          ],
-          { useNativeDriver: false }
+          ], {
+            listener: this.handleScroll,
+          }
         )}
         snapToInterval={175}
         style={styles.scrollView}
@@ -77,6 +91,14 @@ const styles = StyleSheet.create({
   },
   productHeader: {
     flex: 7.5,
+    backgroundColor: '#7E57C2',
+  },
+  seletedProduct: {
+    height: 3,
+    width: 175 - 10,
+    position: 'absolute',
+    zIndex: 5,
+    top: 0,
     backgroundColor: '#7E57C2',
   },
   productInfo: {

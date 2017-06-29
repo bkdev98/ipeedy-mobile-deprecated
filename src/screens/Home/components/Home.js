@@ -68,6 +68,13 @@ class Home extends Component {
     this.setState({ region });
   }
 
+  handleMarkerPress = index => {
+    this._productlist._scrollview._component.scrollTo({
+      x: index * 175,
+      animated: false,
+    });
+  }
+
   handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
 
   render() {
@@ -140,6 +147,7 @@ class Home extends Component {
                       key={product.id}
                       coordinate={product.coordinate}
                       anchor={{ x: 0.5, y: 0.5 }}
+                      onPress={() => this.handleMarkerPress(index)}
                     >
                       <Animated.View style={[styles.markerWrap, opacityStyle]}>
                         <Animated.View style={[styles.ring, sizeStyle]} />
@@ -157,7 +165,11 @@ class Home extends Component {
         */}
 
         <View style={styles.productsContainer}>
-          <ProductsList products={feedProducts} animation={this.animation} />
+          <ProductsList
+            products={feedProducts}
+            animation={this.animation}
+            ref={c => this._productlist = c}
+          />
         </View>
 
       </View>
