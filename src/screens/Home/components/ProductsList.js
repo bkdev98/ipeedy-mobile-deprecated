@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 import Rating from './Rating';
@@ -23,23 +24,32 @@ class ProductsList extends Component {
     });
   }
 
+  selectProduct = () => {}
+
   render() {
     const products = this.props.products.map((product, index) => (
-      <View style={styles.productContainer} key={product.id}>
-        <View style={styles.productHeader}>
-          {index === this.state.selectedProduct &&
-            <View style={styles.seletedProduct} />}
-          <Image
-            source={{ uri: product.images[0] }}
-            style={{ flex: 1 }}
-            resizeMode='cover'
-          />
+      <TouchableOpacity
+        underlayColor='#E1BEE7'
+        style={styles.productContainer}
+        key={product.id}
+        onPress={this.selectProduct}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={styles.productHeader}>
+            {index === this.state.selectedProduct &&
+              <View style={styles.seletedProduct} />}
+            <Image
+              source={{ uri: product.images[0] }}
+              style={{ flex: 1 }}
+              resizeMode='cover'
+            />
+          </View>
+          <View style={styles.productInfo}>
+            <Text style={styles.productName}>{product.price} · {product.name}</Text>
+            <Rating rating={product.rating} reviews={product.reviews.length} />
+          </View>
         </View>
-        <View style={styles.productInfo}>
-          <Text style={styles.productName}>{product.price} · {product.name}</Text>
-          <Rating rating={product.rating} reviews={product.reviews.length} />
-        </View>
-      </View>
+      </TouchableOpacity>
     ));
 
     return (

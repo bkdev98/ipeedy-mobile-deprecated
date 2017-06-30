@@ -182,10 +182,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapContainer: {
-    flex: 7,
+    flex: 7.5,
   },
   productsContainer: {
-    flex: 3,
+    flex: 2.5,
     backgroundColor: 'white',
   },
   loadingContainer: {
