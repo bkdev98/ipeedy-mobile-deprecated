@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const BackButton = ({ onPress, color }) => (
+const ShareButton = ({ onPress, color }) => (
   Platform.OS === 'android' ?
     <TouchableOpacity
       onPress={() => onPress()}
@@ -18,7 +18,7 @@ const BackButton = ({ onPress, color }) => (
         borderRadius: 25,
       }}
       >
-        <Icon name="md-arrow-back" size={30} color={color} />
+        <Icon name="md-share" size={25} color={color} />
       </View>
     </TouchableOpacity>
     : <TouchableOpacity
@@ -34,17 +34,17 @@ const BackButton = ({ onPress, color }) => (
           alignItems: 'center',
         }}
       >
-        <Icon name="md-arrow-back" size={25} color={color} />
+        <Icon name="md-share" size={22} color={color} />
       </View>
     </TouchableOpacity>
 );
 
-BackButton.propTypes = {
+ShareButton.propTypes = {
   color: PropTypes.string,
 };
 
-BackButton.defaultProps = {
+ShareButton.defaultProps = {
   color: 'black',
 };
 
-export default BackButton;
+export default ShareButton;

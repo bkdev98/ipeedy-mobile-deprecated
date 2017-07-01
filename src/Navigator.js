@@ -10,6 +10,7 @@ import ConfirmPhone from './screens/Auth/components/ConfirmPhone';
 import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
+import Product from './screens/Product/components/Product';
 
 import Drawer from './components/Drawer';
 
@@ -28,8 +29,16 @@ const AuthNavigator = StackNavigator({
   mode: 'modal',
 });
 
-const MainNavigator = DrawerNavigator({
+const HomeNavigator = StackNavigator({
   Home: { screen: HomeContainer },
+  Product: {
+    screen: Product,
+    path: 'product/:id',
+  },
+});
+
+const MainNavigator = DrawerNavigator({
+  Home: { screen: HomeNavigator },
   Settings: { screen: Settings },
 }, {
   contentComponent: props => <Drawer {...props} />,

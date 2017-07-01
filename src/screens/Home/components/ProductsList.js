@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import Rating from './Rating';
+import Rating from '../../../components/Rating';
 
 const { width } = Dimensions.get('window');
 
@@ -24,7 +24,9 @@ class ProductsList extends Component {
     });
   }
 
-  selectProduct = () => {}
+  selectProduct = index => {
+    this.props.pressProduct(index);
+  }
 
   render() {
     const products = this.props.products.map((product, index) => (
@@ -32,7 +34,7 @@ class ProductsList extends Component {
         underlayColor='#E1BEE7'
         style={styles.productContainer}
         key={product.id}
-        onPress={this.selectProduct}
+        onPress={() => this.selectProduct(index)}
       >
         <View style={{ flex: 1 }}>
           <View style={styles.productHeader}>

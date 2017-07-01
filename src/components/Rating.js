@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const Rating = ({ rating, reviews }) => {
+const Rating = ({ rating, reviews, displayText, displayNumber }) => {
   let rates = '';
   let i = 0;
   for (i = 0; i < rating; i++) rates += '★';
@@ -12,7 +12,7 @@ const Rating = ({ rating, reviews }) => {
         {rates}
       </Text>
       <Text style={styles.reviews}>
-        {`${reviews} Reviews`}
+        {`${displayNumber ? reviews : ''}${displayText ? ' Reviews' : ''}`}
       </Text>
     </View>
   );
@@ -35,5 +35,10 @@ const styles = StyleSheet.create({
     top: 2,
   },
 });
+
+Rating.defaultProps = {
+  displayText: true,
+  displayNumber: true,
+};
 
 export default Rating;

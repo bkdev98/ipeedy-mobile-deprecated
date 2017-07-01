@@ -19,6 +19,7 @@ import feedProducts from '../modules/feed';
 class Home extends Component {
   static navigationOptions = {
     tabBarVisible: false,
+    header: null,
   }
 
   state = {
@@ -73,6 +74,10 @@ class Home extends Component {
       x: index * 175,
       animated: false,
     });
+  }
+
+  handlePressProduct = index => {
+    this.props.navigation.navigate('Product', { id: index });
   }
 
   handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
@@ -169,6 +174,7 @@ class Home extends Component {
             products={feedProducts}
             animation={this.animation}
             ref={c => this._productlist = c}
+            pressProduct={this.handlePressProduct}
           />
         </View>
 
