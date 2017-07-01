@@ -11,6 +11,7 @@ import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
 import Product from './screens/Product/components/Product';
+import About from './screens/About/components/About';
 
 import Drawer from './components/Drawer';
 
@@ -40,8 +41,24 @@ const HomeNavigator = StackNavigator({
 const MainNavigator = DrawerNavigator({
   Home: { screen: HomeNavigator },
   Settings: { screen: Settings },
+  About: { screen: About },
 }, {
   contentComponent: props => <Drawer {...props} />,
+  contentOptions: {
+    labelStyle: {
+      fontFamily: 'Quicksand-Regular',
+      fontSize: 17,
+      fontWeight: '400',
+    },
+    style: {
+      top: 0,
+      left: 20,
+    },
+    activeTintColor: 'black',
+    activeBackgroundColor: 'transparent',
+    inactiveTintColor: 'black',
+    inactiveBackgroundColor: 'transparent',
+  },
 });
 
 const Navigator = TabNavigator({
