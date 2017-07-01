@@ -4,10 +4,13 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  Animated,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ShareButton = ({ onPress, color }) => (
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+
+const ShareButton = ({ onPress, color, animatedColor }) => (
   Platform.OS === 'android' ?
     <TouchableOpacity
       onPress={() => onPress()}
@@ -34,7 +37,7 @@ const ShareButton = ({ onPress, color }) => (
           alignItems: 'center',
         }}
       >
-        <Icon name="md-share" size={22} color={color} />
+        <AnimatedIcon name="md-share" size={22} color={color} style={animatedColor} />
       </View>
     </TouchableOpacity>
 );

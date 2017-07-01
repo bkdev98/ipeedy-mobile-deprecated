@@ -7,6 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Animated,
+  StatusBar,
   Platform,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -32,16 +34,48 @@ class Product extends Component {
     this.product = feedProducts[props.navigation.state.params.id];
   }
 
+  componentWillMount() {
+    this.navbarAnimated = new Animated.Value(0);
+  }
+
   render() {
+    const navbarStyle = {
+      backgroundColor: this.navbarAnimated.interpolate({
+        inputRange: [0, ((height * 2) / 3) - 300, ((height * 2) / 3) - 200],
+        outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,0)', 'rgba(255,255,255,1)'],
+      }),
+      shadowOpacity: this.navbarAnimated.interpolate({
+        inputRange: [0, ((height * 2) / 3) - 300, ((height * 2) / 3) - 200],
+        outputRange: [0, 0, 1],
+      }),
+    };
+
+    const iconColorStyle = {
+      color: this.navbarAnimated.interpolate({
+        inputRange: [0, ((height * 2) / 3) - 300, ((height * 2) / 3) - 200],
+        outputRange: ['rgb(255,255,255)', 'rgb(255,255,255)', 'rgb(0,0,0)'],
+      }),
+    };
+
     return (
       <View style={styles.container}>
-        <View style={styles.backButton}>
-          <BackButton onPress={() => this.props.navigation.goBack()} color="white" />
-        </View>
-
-        <View style={styles.shareButton}>
-          <ShareButton onPress={() => {}} color="white" />
-        </View>
+        <StatusBar barStyle='dark-content' />
+        <Animated.View style={[styles.navbar, navbarStyle]}>
+          <View style={styles.backButton}>
+            <BackButton
+              onPress={() => this.props.navigation.goBack()}
+              color="white"
+              animatedColor={iconColorStyle}
+            />
+          </View>
+          <View style={styles.shareButton}>
+            <ShareButton
+              onPress={() => {}}
+              color="white"
+              animatedColor={iconColorStyle}
+            />
+          </View>
+        </Animated.View>
 
         <View style={styles.checkoutContainer}>
           <View style={styles.checkoutContent}>
@@ -68,6 +102,10 @@ class Product extends Component {
         <ScrollView
           contentContainerStyle={{ height: 1300 }}
           showsVerticalScrollIndicator={false}
+          scrollEventThrottle={1}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: this.navbarAnimated } } },
+          ])}
         >
           <Image style={styles.images} source={{ uri: this.product.images[0] }} />
           <View style={styles.content}>
@@ -187,18 +225,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  backButton: {
+  navbar: {
     position: 'absolute',
     zIndex: 100,
-    top: Platform.OS === 'android' ? 35 : 25,
+    top: 0,
+    height: 65,
+    width,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingTop: 15,
+    alignItems: 'center',
+    shadowColor: 'rgba(0,0,0,0.5)',
+  },
+  backButton: {
     backgroundColor: 'transparent',
   },
   shareButton: {
-    position: 'absolute',
-    zIndex: 100,
-    top: Platform.OS === 'android' ? 35 : 25,
     backgroundColor: 'transparent',
-    right: Platform.OS === 'android' ? 20 : 10,
   },
   images: {
     width,

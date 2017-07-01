@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import {
   View,
   TouchableOpacity,
+  Animated,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const BackButton = ({ onPress, color }) => (
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+
+const BackButton = ({ onPress, color, animatedColor }) => (
   Platform.OS === 'android' ?
     <TouchableOpacity
       onPress={() => onPress()}
@@ -34,7 +37,7 @@ const BackButton = ({ onPress, color }) => (
           alignItems: 'center',
         }}
       >
-        <Icon name="md-arrow-back" size={25} color={color} />
+        <AnimatedIcon name="md-arrow-back" size={25} color={color} style={animatedColor} />
       </View>
     </TouchableOpacity>
 );
