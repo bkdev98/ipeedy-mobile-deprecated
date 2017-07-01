@@ -109,7 +109,7 @@ class Home extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
         <View style={styles.hamburgerContainer}>
           <Hamburger onPress={this.handleHamburger} />

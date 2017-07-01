@@ -187,7 +187,7 @@ class Product extends Component {
               <View style={styles.featuredReviewContainer}>
                 <View style={styles.featuredReviewUser}>
                   <View style={styles.hawkerImage} />
-                  <View style={{ left: 10 }}>
+                  <View style={{ left: 10, justifyContent: 'space-around' }}>
                     <Text style={styles.username}>Quốc Khánh</Text>
                     <Text style={styles.postTime}>July 2017</Text>
                   </View>
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   featuredReviewContainer: {
-    top: 10,
+    top: 15,
     height: 100,
   },
   featuredReviewUser: {
@@ -344,17 +344,17 @@ const styles = StyleSheet.create({
   },
   postTime: {
     fontFamily: 'Quicksand-Regular',
-    fontSize: 15,
+    fontSize: 14,
   },
   featuredReviewContent: {
-    top: 10,
+    top: 15,
   },
   featuredReview: {
     fontFamily: 'Quicksand-Regular',
     fontSize: 16,
   },
   allReview: {
-    top: 20,
+    top: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
