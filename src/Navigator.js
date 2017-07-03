@@ -11,6 +11,7 @@ import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
 import Product from './screens/Product/components/Product';
+import User from './screens/User/components/User';
 import About from './screens/About/components/About';
 
 import Drawer from './components/Drawer';
@@ -40,6 +41,7 @@ const HomeNavigator = StackNavigator({
 
 const MainNavigator = DrawerNavigator({
   Home: { screen: HomeNavigator },
+  Profile: { screen: User },
   Settings: { screen: Settings },
   About: { screen: About },
 }, {
@@ -54,7 +56,7 @@ const MainNavigator = DrawerNavigator({
       top: 0,
       left: 20,
     },
-    activeTintColor: 'black',
+    activeTintColor: '#8E24AA',
     activeBackgroundColor: 'transparent',
     inactiveTintColor: 'black',
     inactiveBackgroundColor: 'transparent',

@@ -6,15 +6,21 @@ import {
   Platform,
   StyleSheet,
   Animated,
+  Dimensions,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import MapStyle from './MapStyle';
 import ProductsList from './ProductsList';
 import Hamburger from '../../../components/Hamburger';
+import FunButton from '../../../components/FunButton';
+import ModalBox from '../../../components/ModalBox';
 import UserMarker from './UserMarker';
+import Filters from './Filters';
 
 import feedProducts from '../modules/feed';
+
+const { width, height } = Dimensions.get('window');
 
 class Home extends Component {
   static navigationOptions = {
@@ -24,14 +30,15 @@ class Home extends Component {
 
   state = {
     region: null,
+    filtersVisible: false,
   }
 
   componentWillMount() {
+    this.props.getCurrentLocation();
     this.animation = new Animated.Value(0);
   }
 
   componentDidMount() {
-    this.props.getCurrentLocation();
     this.animation.addListener(({ value }) => {
       let index = Math.floor((value / 175) + 0.3);
       if (index >= feedProducts.length) {
@@ -80,6 +87,13 @@ class Home extends Component {
     this.props.navigation.navigate('Product', { id: index });
   }
 
+  handleFilter = () => {
+    console.log('Hello', this.state.region);
+    this.setState({ filtersVisible: true }, () => console.log(this.state.region));
+  }
+
+  handleRefresh = () => {}
+
   handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
 
   render() {
@@ -115,6 +129,16 @@ class Home extends Component {
           <Hamburger onPress={this.handleHamburger} />
         </View>
 
+        <ModalBox
+          isOpen={this.state.filtersVisible}
+          onClosed={() => this.setState({ filtersVisible: false })}
+          backButtonClose={false}
+        >
+          <View style={styles.filtersModal}>
+            <Filters />
+          </View>
+        </ModalBox>
+
         {/*
           Map View
         */}
@@ -126,42 +150,56 @@ class Home extends Component {
                 <ActivityIndicator />
               </View>
               :
-              <MapView
-                ref={map => this.map = map}
-                style={StyleSheet.absoluteFill}
-                provider={PROVIDER_GOOGLE}
-                region={this.state.region}
-                onRegionChange={this.onRegionChange}
-                customMapStyle={MapStyle}
-              >
-                {region &&
-                <MapView.Marker coordinate={region} anchor={{ x: 0.5, y: 0.5 }}>
-                  <UserMarker />
-                </MapView.Marker>}
-                {feedProducts.map((product, index) => {
-                  const sizeStyle = {
-                    width: interpolations[index].size,
-                    height: interpolations[index].size,
-                    borderRadius: interpolations[index].size,
-                  };
-                  const opacityStyle = {
-                    opacity: interpolations[index].opacity,
-                  };
-                  return (
-                    <MapView.Marker
-                      key={product.id}
-                      coordinate={product.coordinate}
-                      anchor={{ x: 0.5, y: 0.5 }}
-                      onPress={() => this.handleMarkerPress(index)}
-                    >
-                      <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                        <Animated.View style={[styles.ring, sizeStyle]} />
-                        <View style={styles.marker} />
-                      </Animated.View>
-                    </MapView.Marker>
-                  );
-                })}
-              </MapView>
+              <View style={{ flex: 1 }}>
+                <View style={styles.mapControl}>
+                  <View style={styles.filterContainer}>
+                    <FunButton
+                      icon='ios-restaurant-outline'
+                      title='FILTERS'
+                      onPress={this.handleFilter}
+                      color='white'
+                      iconColor='black'
+                    />
+                  </View>
+                </View>
+                <MapView
+                  ref={map => this.map = map}
+                  style={StyleSheet.absoluteFill}
+                  provider={PROVIDER_GOOGLE}
+                  initialRegion={region}
+                  region={this.state.region}
+                  onRegionChange={this.onRegionChange}
+                  customMapStyle={MapStyle}
+                >
+                  {region &&
+                  <MapView.Marker coordinate={region} anchor={{ x: 0.5, y: 0.5 }}>
+                    <UserMarker />
+                  </MapView.Marker>}
+                  {feedProducts.map((product, index) => {
+                    const sizeStyle = {
+                      width: interpolations[index].size,
+                      height: interpolations[index].size,
+                      borderRadius: interpolations[index].size,
+                    };
+                    const opacityStyle = {
+                      opacity: interpolations[index].opacity,
+                    };
+                    return (
+                      <MapView.Marker
+                        key={product.id}
+                        coordinate={product.coordinate}
+                        anchor={{ x: 0.5, y: 0.5 }}
+                        onPress={() => this.handleMarkerPress(index)}
+                      >
+                        <Animated.View style={[styles.markerWrap, opacityStyle]}>
+                          <Animated.View style={[styles.ring, sizeStyle]} />
+                          <View style={styles.marker} />
+                        </Animated.View>
+                      </MapView.Marker>
+                    );
+                  })}
+                </MapView>
+              </View>
           }
         </View>
 
@@ -189,6 +227,28 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 7.5,
+  },
+  mapControl: {
+    position: 'absolute',
+    bottom: 20,
+    width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+    paddingHorizontal: 20,
+  },
+  refreshContainer: {
+    paddingRight: 20,
+  },
+  filterContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  filtersModal: {
+    width: width * 0.9,
+    height: height * 0.8,
   },
   productsContainer: {
     flex: 2.5,

@@ -5,16 +5,18 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 
 import BackButton from '../../../components/BackButton';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class About extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle='light-content' />
         <View style={styles.backButton}>
           <BackButton color='white' onPress={() => this.props.navigation.goBack()} />
         </View>

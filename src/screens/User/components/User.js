@@ -1,36 +1,38 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
+  StatusBar,
   Image,
+  Text,
   StyleSheet,
 } from 'react-native';
-import { DrawerItems } from 'react-navigation';
 
-class Drawer extends Component {
-  static navigationOptions = {
-    tabBarVisible: false,
-  }
+import BackButton from '../../../components/BackButton';
 
+class User extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle='light-content' />
+        <View style={styles.backButton}>
+          <BackButton
+            onPress={() => this.props.navigation.goBack()}
+            color='white'
+          />
+        </View>
         <View style={styles.headerContainer}>
           <Image
-            source={require('../../assets/images/auth-background.png')}
+            source={require('../../../../assets/images/auth-background.png')}
             style={styles.headerImage}
           />
           <View style={styles.infoContainer}>
             <View style={styles.avatar} />
             <View style={styles.metaInfo}>
               <Text style={styles.username}>Quốc Khánh</Text>
-              <Text style={styles.phone}>0917 679 524</Text>
             </View>
           </View>
         </View>
-        <View style={styles.contentContainer}>
-          <DrawerItems {...this.props} />
-        </View>
+        <View style={styles.contentContainer} />
       </View>
     );
   }
@@ -40,31 +42,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  backButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 20,
+  },
   headerContainer: {
     flex: 3.5,
-    justifyContent: 'flex-end',
-  },
-  headerImage: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'cover',
+    backgroundColor: '#9C27B0',
+    alignItems: 'center',
   },
   infoContainer: {
-    bottom: 20,
-    left: 30,
     position: 'absolute',
-    flexDirection: 'row',
+    bottom: 20,
+    alignItems: 'center',
   },
   avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 84,
+    height: 84,
+    borderRadius: 42,
     backgroundColor: 'white',
   },
   metaInfo: {
-    left: 20,
+    top: 10,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   username: {
     fontFamily: 'Quicksand-Medium',
@@ -72,15 +74,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'white',
   },
-  phone: {
-    fontFamily: 'Quicksand-Regular',
-    backgroundColor: 'transparent',
-    color: 'white',
-    fontSize: 16,
+  headerImage: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'cover',
   },
   contentContainer: {
     flex: 6.5,
   },
 });
 
-export default Drawer;
+export default User;

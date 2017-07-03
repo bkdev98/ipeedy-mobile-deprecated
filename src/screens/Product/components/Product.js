@@ -59,7 +59,7 @@ class Product extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar barStyle='dark-content' />
+        <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
         <Animated.View style={[styles.navbar, navbarStyle]}>
           <View style={styles.backButton}>
             <BackButton
