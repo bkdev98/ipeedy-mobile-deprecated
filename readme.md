@@ -1,6 +1,7 @@
 # Pavement Shop
 > An ecommerce application created for greateness 🍭.
-<img alt="Pavement" src="assets/images/auth-screen-demo.png">
+
+<img alt="Pavement" src="assets/images/screenshots/demo.png">
 
 ## Technology
 - [React Native](https://facebook.github.io/react-native/)
