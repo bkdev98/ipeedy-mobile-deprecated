@@ -7,22 +7,46 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FunButton = ({ icon, color, iconColor, title, onPress }) => (
-  <View style={styles.container}>
-    <TouchableOpacity onPress={onPress} style={[styles.button, { backgroundColor: color }]}>
-      <Text style={styles.title}>{title} </Text>
-      <Icon name={icon} color={iconColor || 'black'} size={12} />
-    </TouchableOpacity>
-  </View>
-);
+const FunButton = ({ icon, color, iconColor, title, onPress, medium }) => {
+  let mediumStyle;
+  let mediumTextStyle;
+  let iconSize = 12;
+  if (medium) {
+    mediumStyle = {
+      paddingHorizontal: 25,
+      paddingVertical: 20,
+      borderRadius: 20,
+    };
+    mediumTextStyle = {
+      fontSize: 17,
+    };
+    iconSize = 16;
+  }
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={onPress}
+        style={[styles.button, { backgroundColor: color }, mediumStyle]}
+      >
+        <Text
+          style={[styles.title, mediumTextStyle, { color: iconColor }]}
+        >
+          {title} </Text>
+        <Icon name={icon} color={iconColor || 'black'} size={iconSize} />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    width: 100,
+    flex: 1,
   },
   button: {
     borderRadius: 15,
     paddingVertical: 7,
+    paddingHorizontal: 20,
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',

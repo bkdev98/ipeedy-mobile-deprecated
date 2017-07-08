@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import {
-  Text,
   View,
+  Text,
   StyleSheet,
 } from 'react-native';
 
-class Filters extends Component {
+class InputProductName extends Component {
+  static navigationOptions = {
+    header: null,
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Filters</Text>
+        <Text style={styles.title}>Enter product name:</Text>
       </View>
     );
   }
@@ -18,12 +22,11 @@ class Filters extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   title: {
     fontFamily: 'Quicksand-Regular',
-    fontSize: 16,
+    fontSize: 20,
   },
 });
 
-export default Filters;
+export default InputProductName;

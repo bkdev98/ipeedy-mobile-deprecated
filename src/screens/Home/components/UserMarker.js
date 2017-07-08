@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { View, Animated, Easing, StyleSheet } from 'react-native';
 
 class UserMarker extends Component {
+  constructor(props) {  // eslint-disable-line
+    super(props);
+  }
+
   componentWillMount() {
     this.animated = new Animated.Value(0);
   }

@@ -3,7 +3,6 @@ import {
   View,
   ActivityIndicator,
   StatusBar,
-  Platform,
   StyleSheet,
   Animated,
   Dimensions,
@@ -15,6 +14,7 @@ import ProductsList from './ProductsList';
 import Hamburger from '../../../components/Hamburger';
 import FunButton from '../../../components/FunButton';
 import ModalBox from '../../../components/ModalBox';
+import NavBar from '../../../components/NavBar';
 import UserMarker from './UserMarker';
 import Filters from './Filters';
 
@@ -92,6 +92,10 @@ class Home extends Component {
     this.setState({ filtersVisible: true }, () => console.log(this.state.region));
   }
 
+  handleAddProduct = () => {
+    this.props.navigation.navigate('CreateProduct');
+  }
+
   handleRefresh = () => {}
 
   handleHamburger = () => this.props.navigation.navigate('DrawerOpen');
@@ -125,9 +129,20 @@ class Home extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
-        <View style={styles.hamburgerContainer}>
-          <Hamburger onPress={this.handleHamburger} />
-        </View>
+        <NavBar>
+          <View style={styles.hamburger}>
+            <Hamburger onPress={this.handleHamburger} />
+          </View>
+          <View style={styles.addButton}>
+            <FunButton
+              onPress={this.handleAddProduct}
+              icon='ios-cart-outline'
+              title='ADD'
+              color='white'
+              iconColor='black'
+            />
+          </View>
+        </NavBar>
 
         <ModalBox
           isOpen={this.state.filtersVisible}
@@ -154,7 +169,7 @@ class Home extends Component {
                 <View style={styles.mapControl}>
                   <View style={styles.filterContainer}>
                     <FunButton
-                      icon='ios-restaurant-outline'
+                      icon='ios-color-wand-outline'
                       title='FILTERS'
                       onPress={this.handleFilter}
                       color='white'
@@ -213,6 +228,7 @@ class Home extends Component {
             animation={this.animation}
             ref={c => this._productlist = c}
             pressProduct={this.handlePressProduct}
+            onAdd={this.handleAddProduct}
           />
         </View>
 
@@ -260,12 +276,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  hamburgerContainer: {
-    position: 'absolute',
-    zIndex: 2,
-    elevation: 2,
-    top: Platform.OS === 'android' ? 35 : 25,
-    left: Platform.OS === 'android' ? 35 : 5,
+  hamburger: {
+    backgroundColor: 'transparent',
+  },
+  addButton: {
+    top: 10,
     backgroundColor: 'transparent',
   },
   markerWrap: {

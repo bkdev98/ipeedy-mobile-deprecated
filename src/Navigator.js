@@ -11,6 +11,8 @@ import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
 import Product from './screens/Product/components/Product';
+import CreateProduct from './screens/Product/components/CreateProduct';
+import InputProductName from './screens/Product/components/InputProductName';
 import User from './screens/User/components/User';
 import About from './screens/About/components/About';
 
@@ -31,12 +33,18 @@ const AuthNavigator = StackNavigator({
   mode: 'modal',
 });
 
+const CreateProductNavigator = StackNavigator({
+  CreateProduct: { screen: CreateProduct },
+  EnterName: { screen: InputProductName },
+});
+
 const HomeNavigator = StackNavigator({
   Home: { screen: HomeContainer },
   Product: {
     screen: Product,
     path: 'product/:id',
   },
+  CreateProduct: { screen: CreateProductNavigator },
 });
 
 const MainNavigator = DrawerNavigator({

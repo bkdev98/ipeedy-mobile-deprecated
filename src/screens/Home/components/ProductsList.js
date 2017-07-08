@@ -37,9 +37,9 @@ class ProductsList extends Component {
         onPress={() => this.selectProduct(index)}
       >
         <View style={{ flex: 1 }}>
+          {index === this.state.selectedProduct &&
+            <View style={styles.seletedProduct} />}
           <View style={styles.productHeader}>
-            {index === this.state.selectedProduct &&
-              <View style={styles.seletedProduct} />}
             <Image
               source={{ uri: product.images[0] }}
               style={{ flex: 1 }}
@@ -78,6 +78,14 @@ class ProductsList extends Component {
         contentContainerStyle={styles.scrollViewContent}
       >
         {products}
+        <TouchableOpacity
+          style={styles.productContainer}
+          onPress={this.props.onAdd}
+        >
+          <View style={styles.addContainer}>
+            <Text style={styles.add}>+</Text>
+          </View>
+        </TouchableOpacity>
       </Animated.ScrollView>
     );
   }
@@ -107,10 +115,10 @@ const styles = StyleSheet.create({
   },
   seletedProduct: {
     height: 3,
-    width: 175 - 10,
     position: 'absolute',
-    zIndex: 5,
+    zIndex: 1,
     top: 0,
+    width: 175 - '0.45%',
     backgroundColor: '#7E57C2',
   },
   productInfo: {
@@ -125,6 +133,17 @@ const styles = StyleSheet.create({
   productDescription: {
     fontFamily: 'Quicksand-Regular',
     fontSize: 12,
+  },
+  addContainer: {
+    backgroundColor: '#7E57C2',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  add: {
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 25,
+    color: 'white',
   },
 });
 

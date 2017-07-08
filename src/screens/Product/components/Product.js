@@ -227,9 +227,10 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: 2,
+    elevation: 2,
     top: 0,
-    height: 65,
+    height: Platform.OS === 'android' && Platform.Version >= 20 ? 89 : 65,
     width,
     flexDirection: 'row',
     justifyContent: 'space-between',
