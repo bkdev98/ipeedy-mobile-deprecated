@@ -9,7 +9,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 # Change 'AirMapsExplorer' to match the target in your Xcode project.
-target 'mobile' do
+target 'ipeedy' do
   react_native_path = "../node_modules/react-native"
   pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
   pod 'React', path: '../node_modules/react-native', :subspecs => [

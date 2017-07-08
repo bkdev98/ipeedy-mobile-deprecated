@@ -4,4 +4,4 @@ import {
 
 import App from './src/App';
 
-AppRegistry.registerComponent('mobile', () => App);
+AppRegistry.registerComponent('ipeedy', () => App);
