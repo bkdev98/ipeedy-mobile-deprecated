@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   View,
-  ActivityIndicator,
   StatusBar,
   StyleSheet,
   Animated,
@@ -84,8 +83,8 @@ class Home extends Component {
     });
   }
 
-  handlePressProduct = index => {
-    this.props.navigation.navigate('Product', { id: index });
+  handlePressProduct = id => {
+    this.props.navigation.navigate('Product', { id });
   }
 
   handleFilter = () => {

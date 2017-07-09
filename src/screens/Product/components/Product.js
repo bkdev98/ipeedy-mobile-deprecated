@@ -14,8 +14,8 @@ import {
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import feedProducts from '../../Home/modules/feed';
 import BackButton from '../../../components/BackButton';
+import Loading from '../../../components/Loading';
 import ShareButton from '../../../components/ShareButton';
 import Divider from '../../../components/Divider';
 import Rating from '../../../components/Rating';
@@ -29,13 +29,9 @@ class Product extends Component {
     header: null,
   }
 
-  constructor(props) {
-    super(props);
-    this.product = feedProducts[props.navigation.state.params.id];
-  }
-
   componentWillMount() {
     this.navbarAnimated = new Animated.Value(0);
+    this.props.getProduct(this.props.navigation.state.params.id);
   }
 
   render() {
@@ -77,144 +73,148 @@ class Product extends Component {
           </View>
         </Animated.View>
 
-        <View style={styles.checkoutContainer}>
-          <View style={styles.checkoutContent}>
-            <Text style={styles.checkoutPrizeGroup}>
-              <Text style={styles.checkoutPrize}>{this.product.price}</Text>
-              <Text style={styles.checkoutUnit}> / product</Text>
-            </Text>
-            <Rating
-              rating={this.product.rating}
-              reviews={this.product.reviews.length}
-              displayText={false}
-            />
-          </View>
-          <View style={styles.checkoutButtonContainer}>
-            <TouchableOpacity
-              style={styles.checkoutButton}
-              onPress={() => {}}
-            >
-              <Text style={styles.checkoutButtonText}>MUA</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <ScrollView
-          contentContainerStyle={{ height: 1300 }}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={1}
-          onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: this.navbarAnimated } } },
-          ])}
-        >
-          <Image style={styles.images} source={{ uri: this.product.images[0] }} />
-          <View style={styles.content}>
-            <Text style={styles.text}>
-              {this.product.name.toUpperCase()}
-            </Text>
-
-            <View style={styles.metaInfo}>
-              <View>
-                <Text style={styles.category}>Đồ ăn vặt</Text>
-                <Text style={styles.hawker}>
-                  <Text style={styles.soldBy}>Bán bởi </Text>
-                  <Text style={styles.hawkerName}>Quốc Khánh</Text>
+        {this.props.loading || !this.props.product ? <Loading /> :
+          <View style={{ flex: 1 }}>
+            <View style={styles.checkoutContainer}>
+              <View style={styles.checkoutContent}>
+                <Text style={styles.checkoutPrizeGroup}>
+                  <Text style={styles.checkoutPrize}>{this.props.product.price}</Text>
+                  <Text style={styles.checkoutUnit}> / product</Text>
                 </Text>
-              </View>
-              <View style={styles.hawkerImageContainer}>
-                <View style={styles.hawkerImage} />
-              </View>
-            </View>
-
-            <Divider />
-
-            <View style={styles.metaIcons}>
-              <View style={styles.metaIcon}>
-                <Icon name='ios-cart-outline' color='black' size={30} />
-                <Text style={styles.metaIconText}>21 delivered</Text>
-              </View>
-              <View style={styles.metaIcon}>
-                <Icon name='ios-archive-outline' color='black' size={30} />
-                <Text style={styles.metaIconText}>69 left</Text>
-              </View>
-              <View style={styles.metaIcon}>
-                <Icon name='ios-clock-outline' color='black' size={30} />
-                <Text style={styles.metaIconText}>10 min</Text>
-              </View>
-              <View style={styles.metaIcon}>
-                <Icon name='ios-cloudy-night-outline' color='black' size={30} />
-                <Text style={styles.metaIconText}>6h-22h</Text>
-              </View>
-            </View>
-
-            <Divider />
-
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.smallTitle}>Mô tả</Text>
-              <Text style={styles.description}>{this.product.description}</Text>
-            </View>
-
-            <Divider />
-
-            <View style={styles.locationContainer}>
-              <Text style={styles.smallTitle}>Vị trí</Text>
-              <MapView
-                ref={map => this.map = map}
-                style={styles.locationMap}
-                provider={PROVIDER_GOOGLE}
-                region={{
-                  ...this.product.coordinate,
-                  latitudeDelta: 0.035,
-                  longitudeDelta: (width / height) * 0.035,
-                }}
-                customMapStyle={MapStyle}
-                scrollEnabled={false}
-              >
-                <MapView.Circle
-                  center={this.product.coordinate}
-                  radius={1000}
-                  strokeColor='rgba(130,4,150, 0.4)'
-                  fillColor='rgba(130,4,150, 0.1)'
+                <Rating
+                  rating={this.props.product.rating}
+                  reviews={this.props.product.reviews.length}
+                  displayText={false}
                 />
-              </MapView>
-              <Text style={styles.distance}>6.9km from here</Text>
-            </View>
-
-            <Divider />
-
-            <View style={styles.reviewContainer}>
-              <Text style={styles.smallTitle}>Đánh giá</Text>
-              <View style={styles.featuredReviewContainer}>
-                <View style={styles.featuredReviewUser}>
-                  <View style={styles.hawkerImage} />
-                  <View style={{ left: 10, justifyContent: 'space-around' }}>
-                    <Text style={styles.username}>Quốc Khánh</Text>
-                    <Text style={styles.postTime}>July 2017</Text>
-                  </View>
-                </View>
-                <View style={styles.featuredReviewContent}>
-                  <Text style={styles.featuredReview}>
-                    {this.product.reviews[0].content}
-                  </Text>
-                </View>
-                <TouchableOpacity onPress={() => {}} style={styles.allReview}>
-                  <View>
-                    <Text style={styles.hawkerName}>{`Xem tất cả ${this.product.reviews.length} đánh giá`}</Text>
-                  </View>
-                  <View>
-                    <Rating
-                      rating={this.product.rating}
-                      reviews={this.product.reviews.length}
-                      displayText={false}
-                      displayNumber={false}
-                    />
-                  </View>
+              </View>
+              <View style={styles.checkoutButtonContainer}>
+                <TouchableOpacity
+                  style={styles.checkoutButton}
+                  onPress={() => {}}
+                >
+                  <Text style={styles.checkoutButtonText}>MUA</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
+            <ScrollView
+              contentContainerStyle={{ height: 1300 }}
+              showsVerticalScrollIndicator={false}
+              scrollEventThrottle={1}
+              onScroll={Animated.event([
+                { nativeEvent: { contentOffset: { y: this.navbarAnimated } } },
+              ])}
+            >
+              <Image style={styles.images} source={{ uri: this.props.product.images[0] }} />
+              <View style={styles.content}>
+                <Text style={styles.text}>
+                  {this.props.product.name.toUpperCase()}
+                </Text>
+
+                <View style={styles.metaInfo}>
+                  <View>
+                    <Text style={styles.category}>Đồ ăn vặt</Text>
+                    <Text style={styles.hawker}>
+                      <Text style={styles.soldBy}>Bán bởi </Text>
+                      <Text style={styles.hawkerName}>Quốc Khánh</Text>
+                    </Text>
+                  </View>
+                  <View style={styles.hawkerImageContainer}>
+                    <View style={styles.hawkerImage} />
+                  </View>
+                </View>
+
+                <Divider />
+
+                <View style={styles.metaIcons}>
+                  <View style={styles.metaIcon}>
+                    <Icon name='ios-cart-outline' color='black' size={30} />
+                    <Text style={styles.metaIconText}>21 delivered</Text>
+                  </View>
+                  <View style={styles.metaIcon}>
+                    <Icon name='ios-archive-outline' color='black' size={30} />
+                    <Text style={styles.metaIconText}>69 left</Text>
+                  </View>
+                  <View style={styles.metaIcon}>
+                    <Icon name='ios-clock-outline' color='black' size={30} />
+                    <Text style={styles.metaIconText}>10 min</Text>
+                  </View>
+                  <View style={styles.metaIcon}>
+                    <Icon name='ios-cloudy-night-outline' color='black' size={30} />
+                    <Text style={styles.metaIconText}>6h-22h</Text>
+                  </View>
+                </View>
+
+                <Divider />
+
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.smallTitle}>Mô tả</Text>
+                  <Text style={styles.description}>{this.props.product.description}</Text>
+                </View>
+
+                <Divider />
+
+                <View style={styles.locationContainer}>
+                  <Text style={styles.smallTitle}>Vị trí</Text>
+                  <MapView
+                    ref={map => this.map = map}
+                    style={styles.locationMap}
+                    provider={PROVIDER_GOOGLE}
+                    region={{
+                      ...this.props.product.coordinate,
+                      latitudeDelta: 0.035,
+                      longitudeDelta: (width / height) * 0.035,
+                    }}
+                    customMapStyle={MapStyle}
+                    scrollEnabled={false}
+                  >
+                    <MapView.Circle
+                      center={this.props.product.coordinate}
+                      radius={1000}
+                      strokeColor='rgba(130,4,150, 0.4)'
+                      fillColor='rgba(130,4,150, 0.1)'
+                    />
+                  </MapView>
+                  <Text style={styles.distance}>6.9km from here</Text>
+                </View>
+
+                <Divider />
+
+                <View style={styles.reviewContainer}>
+                  <Text style={styles.smallTitle}>Đánh giá</Text>
+                  <View style={styles.featuredReviewContainer}>
+                    <View style={styles.featuredReviewUser}>
+                      <View style={styles.hawkerImage} />
+                      <View style={{ left: 10, justifyContent: 'space-around' }}>
+                        <Text style={styles.username}>Quốc Khánh</Text>
+                        <Text style={styles.postTime}>July 2017</Text>
+                      </View>
+                    </View>
+                    <View style={styles.featuredReviewContent}>
+                      <Text style={styles.featuredReview}>
+                        {this.props.product.reviews[0].content}
+                      </Text>
+                    </View>
+                    <TouchableOpacity onPress={() => {}} style={styles.allReview}>
+                      <View>
+                        <Text style={styles.hawkerName}>{`Xem tất cả ${this.props.product.reviews.length} đánh giá`}</Text>
+                      </View>
+                      <View>
+                        <Rating
+                          rating={this.props.product.rating}
+                          reviews={this.props.product.reviews.length}
+                          displayText={false}
+                          displayNumber={false}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        }
       </View>
     );
   }

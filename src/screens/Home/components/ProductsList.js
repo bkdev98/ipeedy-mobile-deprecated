@@ -24,8 +24,8 @@ class ProductsList extends Component {
     });
   }
 
-  selectProduct = index => {
-    this.props.pressProduct(index);
+  selectProduct = id => {
+    this.props.pressProduct(id);
   }
 
   render() {
@@ -34,7 +34,7 @@ class ProductsList extends Component {
         underlayColor='#E1BEE7'
         style={styles.productContainer}
         key={product.id}
-        onPress={() => this.selectProduct(index)}
+        onPress={() => this.selectProduct(product.id)}
       >
         <View style={{ flex: 1 }}>
           {index === this.state.selectedProduct &&
