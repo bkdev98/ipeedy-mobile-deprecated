@@ -13,10 +13,8 @@ import MapStyle from './MapStyle';
 import ProductsList from './ProductsList';
 import Hamburger from '../../../components/Hamburger';
 import FunButton from '../../../components/FunButton';
-import ModalBox from '../../../components/ModalBox';
 import NavBar from '../../../components/NavBar';
 import UserMarker from './UserMarker';
-import Filters from './Filters';
 
 import feedProducts from '../modules/feed';
 
@@ -30,7 +28,6 @@ class Home extends Component {
 
   state = {
     region: null,
-    filtersVisible: false,
   }
 
   componentWillMount() {
@@ -91,8 +88,7 @@ class Home extends Component {
   }
 
   handleFilter = () => {
-    console.log('Hello', this.state.region);
-    this.setState({ filtersVisible: true }, () => console.log(this.state.region));
+    this.props.navigation.navigate('Filters');
   }
 
   handleAddProduct = () => {
@@ -146,16 +142,6 @@ class Home extends Component {
             />
           </View>
         </NavBar>
-
-        <ModalBox
-          isOpen={this.state.filtersVisible}
-          onClosed={() => this.setState({ filtersVisible: false })}
-          backButtonClose={false}
-        >
-          <View style={styles.filtersModal}>
-            <Filters />
-          </View>
-        </ModalBox>
 
         {/*
           Map View

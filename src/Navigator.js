@@ -9,6 +9,7 @@ import AuthContainer from './screens/Auth/containers/AuthContainer';
 import ConfirmPhone from './screens/Auth/components/ConfirmPhone';
 import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
+import Filters from './screens/Home/components/Filters';
 import Settings from './screens/Settings/components/Settings';
 import ProductContainer from './screens/Product/containers/ProductContainer';
 import CreateProduct from './screens/Product/components/CreateProduct';
@@ -44,6 +45,7 @@ const HomeNavigator = StackNavigator({
     screen: ProductContainer,
     path: 'product/:id',
   },
+  Filters: { screen: Filters },
   CreateProduct: { screen: CreateProduct },
 });
 
