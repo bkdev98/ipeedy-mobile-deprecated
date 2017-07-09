@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import {
-} from '../modules/product.js';
-import Product from '../components/Product';
+} from '../modules/user.js';
+import User from '../components/User';
 
 const mapStateToProps = state => ({
   inputData: state.home.inputData,
@@ -12,4 +12,4 @@ const mapStateToProps = state => ({
 const mapActionCreators = {
 };
 
-export default connect(mapStateToProps, mapActionCreators)(Product);
+export default connect(mapStateToProps, mapActionCreators)(User);

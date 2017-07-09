@@ -10,7 +10,7 @@ import ConfirmPhone from './screens/Auth/components/ConfirmPhone';
 import Social from './screens/Auth/components/Social';
 import HomeContainer from './screens/Home/containers/HomeContainer';
 import Settings from './screens/Settings/components/Settings';
-import Product from './screens/Product/components/Product';
+import ProductContainer from './screens/Product/containers/ProductContainer';
 import CreateProduct from './screens/Product/components/CreateProduct';
 import InputProductName from './screens/Product/components/InputProductName';
 import User from './screens/User/components/User';
@@ -41,10 +41,10 @@ const CreateProductNavigator = StackNavigator({
 const HomeNavigator = StackNavigator({
   Home: { screen: HomeContainer },
   Product: {
-    screen: Product,
+    screen: ProductContainer,
     path: 'product/:id',
   },
-  CreateProduct: { screen: CreateProductNavigator },
+  CreateProduct: { screen: CreateProduct },
 });
 
 const MainNavigator = DrawerNavigator({

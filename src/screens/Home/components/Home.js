@@ -34,11 +34,11 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    this.props.getCurrentLocation();
     this.animation = new Animated.Value(0);
   }
 
   componentDidMount() {
+    this.props.getCurrentLocation();
     this.animation.addListener(({ value }) => {
       let index = Math.floor((value / 175) + 0.3);
       if (index >= feedProducts.length) {
@@ -67,9 +67,12 @@ class Home extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    this.setState({
-      region: nextProps.region,
-    });
+    if (nextProps.region && nextProps.region !== this.state.region) {
+      this.setState({
+        region: nextProps.region,
+      });
+      this.props.getNearbyProducts(nextProps.region);
+    }
   }
 
   onRegionChange = (region) => {
@@ -223,13 +226,18 @@ class Home extends Component {
         */}
 
         <View style={styles.productsContainer}>
-          <ProductsList
-            products={feedProducts}
-            animation={this.animation}
-            ref={c => this._productlist = c}
-            pressProduct={this.handlePressProduct}
-            onAdd={this.handleAddProduct}
-          />
+          {this.props.products.length === 0 ?
+            <View style={styles.center}>
+              <ActivityIndicator />
+            </View> :
+            <ProductsList
+              products={this.props.products}
+              animation={this.animation}
+              ref={c => this._productlist = c}
+              pressProduct={this.handlePressProduct}
+              onAdd={this.handleAddProduct}
+            />
+          }
         </View>
 
       </View>
@@ -243,6 +251,11 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 7.5,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mapControl: {
     position: 'absolute',

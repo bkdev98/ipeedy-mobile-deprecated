@@ -40,7 +40,7 @@ class CreateProduct extends Component {
           <Text style={styles.contentText}>Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit 🐳</Text>
           <View style={{ top: 60, width: 150 }}>
             <FunButton
-              onPress={() => { this.props.navigation.navigate('EnterName') ;}}
+              onPress={() => { this.props.navigation.navigate('EnterName'); }}
               icon='ios-arrow-forward-outline'
               title='Continue'
               iconColor='white'

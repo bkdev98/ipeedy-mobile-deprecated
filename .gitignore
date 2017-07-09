@@ -7,6 +7,9 @@
 #
 Pods/
 
+# Configs
+src/constants/api.js
+
 # Xcode
 #
 build/
