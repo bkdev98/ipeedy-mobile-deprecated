@@ -12,6 +12,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapStyle from './MapStyle';
 import ProductsList from './ProductsList';
 import Hamburger from '../../../components/Hamburger';
+import Loading from '../../../components/Loading';
 import FunButton from '../../../components/FunButton';
 import NavBar from '../../../components/NavBar';
 import UserMarker from './UserMarker';
@@ -149,11 +150,7 @@ class Home extends Component {
 
         <View style={styles.mapContainer}>
           {
-            loading ?
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator />
-              </View>
-              :
+            loading ? <Loading /> :
               <View style={{ flex: 1 }}>
                 <View style={styles.mapControl}>
                   <View style={styles.filterContainer}>
@@ -212,10 +209,7 @@ class Home extends Component {
         */}
 
         <View style={styles.productsContainer}>
-          {this.props.products.length === 0 ?
-            <View style={styles.center}>
-              <ActivityIndicator />
-            </View> :
+          {this.props.products.length === 0 ? <Loading /> :
             <ProductsList
               products={this.props.products}
               animation={this.animation}
@@ -268,12 +262,6 @@ const styles = StyleSheet.create({
   productsContainer: {
     flex: 2.5,
     backgroundColor: 'white',
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   hamburger: {
     backgroundColor: 'transparent',

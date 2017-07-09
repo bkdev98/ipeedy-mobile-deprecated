@@ -6,11 +6,7 @@ export default [
     email: 'bkdev98@gmail.com',
     otp: null,
     token: '87y12hif93yrhfi2h',
-    hawkerInfo: {
-      activeTimeStart: 0,
-      activeTimeEnd: 252,
-      delivery: false,
-    },
+    hawkerInfo: null,
   }, {
     id: 1002,
     username: 'Christ Quoc',
@@ -22,6 +18,18 @@ export default [
       activeTimeStart: 300,
       activeTimeEnd: 600,
       delivery: true,
+    },
+  }, {
+    id: 1003,
+    username: 'Sung Hokage',
+    phone: '0171236123',
+    email: 'sung@hokage.com',
+    otp: null,
+    token: '89aywhfieasdfa',
+    hawkerInfo: {
+      activeTimeStart: 123,
+      activeTimeEnd: 412,
+      delivery: false,
     },
   },
 ];
